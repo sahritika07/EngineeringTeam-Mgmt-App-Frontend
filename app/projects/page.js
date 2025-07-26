@@ -10,14 +10,32 @@ export default function Projects() {
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const userData = localStorage.getItem("user")
-    if (userData) {
-      setUser(JSON.parse(userData))
-    }
+  // useEffect(() => {
+  //   const userData = localStorage.getItem("user")
+  //   if (userData) {
+  //     setUser(JSON.parse(userData))
+  //   }
 
-    fetchProjects()
-  }, [])
+  //   fetchProjects()
+  // }, [])
+
+ useEffect(() => {
+  const userData = localStorage.getItem("user");
+  if (userData) {
+    setUser(JSON.parse(userData));
+  }
+
+  fetchProjects();
+
+  // 🔄 Listen for updates
+  const refresh = () => fetchProjects();
+  window.addEventListener("projectProgressUpdated", refresh);
+
+  return () => {
+    window.removeEventListener("projectProgressUpdated", refresh);
+  };
+}, []);
+
 
 
 

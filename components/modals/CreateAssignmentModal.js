@@ -1,5 +1,5 @@
-"use client"
-import { useState, useEffect } from "react"
+"use client";
+import { useState, useEffect } from "react";
 
 export default function CreateAssignmentModal({ onClose, onSubmit }) {
   const [formData, setFormData] = useState({
@@ -11,131 +11,99 @@ export default function CreateAssignmentModal({ onClose, onSubmit }) {
     deadline: "",
     estimatedHours: "",
     tags: [],
-  })
+  });
 
-  const [errors, setErrors] = useState({})
-
-  const [projects, setProjects] = useState([])
-  const [engineers, setEngineers] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [errors, setErrors] = useState({});
+  const [projects, setProjects] = useState([]);
+  const [engineers, setEngineers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
-  const fetchData = async () => {
-    const token = localStorage.getItem("token")
+const fetchData = async () => {
+  const token = localStorage.getItem("token");
 
-    try {
-      const [projectsResponse, engineersResponse] = await Promise.all([
-        fetch("http://localhost:5000/api/projects", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }),
-        fetch("http://localhost:5000/api/engineers", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }),
-      ])
+  try {
+    const [projectsResponse, engineersResponse] = await Promise.all([
+      fetch("http://localhost:5000/api/projects", {
+        method: "GET",   // ✅ Added method explicitly
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }),
+      fetch("http://localhost:5000/api/engineers", {
+        method: "GET",   // ✅ Added method explicitly
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }),
+    ]);
 
-      const projectsData = await projectsResponse.json()
-      const engineersData = await engineersResponse.json()
+    const projectsData = await projectsResponse.json();
+    const engineersData = await engineersResponse.json();
 
-      if (projectsData.success) {
-        setProjects(projectsData.data)
-      }
-
-      if (engineersData.success) {
-        setEngineers(engineersData.data)
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error)
-    } finally {
-      setLoading(false)
+    if (projectsData.success) {
+      setProjects(projectsData.data);
     }
+
+    if (engineersData.success) {
+      setEngineers(engineersData.data);
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    setLoading(false);
   }
+};
+
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }))
-    // Clear error when user starts typing
+    }));
+
     if (errors[field]) {
       setErrors((prev) => ({
         ...prev,
         [field]: "",
-      }))
+      }));
     }
-  }
+  };
 
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors = {};
+    if (!formData.title.trim()) newErrors.title = "Title is required";
+    if (!formData.description.trim()) newErrors.description = "Description is required";
+    if (!formData.project) newErrors.project = "Project is required";
+    if (!formData.assignee) newErrors.assignee = "Assignee is required";
+    if (!formData.deadline) newErrors.deadline = "Deadline is required";
 
-    if (!formData.title.trim()) {
-      newErrors.title = "Title is required"
-    }
-    if (!formData.description.trim()) {
-      newErrors.description = "Description is required"
-    }
-    if (!formData.project) {
-      newErrors.project = "Project is required"
-    }
-    if (!formData.assignee) {
-      newErrors.assignee = "Assignee is required"
-    }
-    if (!formData.deadline) {
-      newErrors.deadline = "Deadline is required"
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (validateForm()) {
-      const selectedProject = projects.find((p) => p.id.toString() === formData.project)
-      const selectedEngineer = engineers.find((e) => e.id.toString() === formData.assignee)
-
-      onSubmit({
-        ...formData,
-        id: Date.now(),
-        status: "active",
-        createdAt: new Date().toISOString(),
-        project: selectedProject?.name || formData.project,
-        engineer: selectedEngineer?.firstName + " " + selectedEngineer?.lastName || formData.assignee,
-        hours: formData.estimatedHours || "40",
-        role: formData.title,
-      })
-
-      // Reset form
-      setFormData({
-        title: "",
-        description: "",
-        project: "",
-        assignee: "",
-        priority: "medium",
-        deadline: "",
-        estimatedHours: "",
-        tags: [],
-      })
-      setErrors({})
-      onClose()
+      onSubmit(formData); // Pass data directly to Assignments page
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-900">Create New Assignment</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -144,6 +112,7 @@ export default function CreateAssignmentModal({ onClose, onSubmit }) {
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Title */}
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">Assignment Title *</label>
               <input
@@ -158,6 +127,7 @@ export default function CreateAssignmentModal({ onClose, onSubmit }) {
               {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
             </div>
 
+            {/* Description */}
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">Description *</label>
               <textarea
@@ -172,6 +142,7 @@ export default function CreateAssignmentModal({ onClose, onSubmit }) {
               {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
             </div>
 
+            {/* Project */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Project *</label>
               <select
@@ -191,6 +162,7 @@ export default function CreateAssignmentModal({ onClose, onSubmit }) {
               {errors.project && <p className="text-red-500 text-sm mt-1">{errors.project}</p>}
             </div>
 
+            {/* Assignee */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Assignee *</label>
               <select
@@ -210,6 +182,7 @@ export default function CreateAssignmentModal({ onClose, onSubmit }) {
               {errors.assignee && <p className="text-red-500 text-sm mt-1">{errors.assignee}</p>}
             </div>
 
+            {/* Priority */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
               <select
@@ -224,6 +197,7 @@ export default function CreateAssignmentModal({ onClose, onSubmit }) {
               </select>
             </div>
 
+            {/* Deadline */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Deadline *</label>
               <input
@@ -237,6 +211,7 @@ export default function CreateAssignmentModal({ onClose, onSubmit }) {
               {errors.deadline && <p className="text-red-500 text-sm mt-1">{errors.deadline}</p>}
             </div>
 
+            {/* Estimated Hours */}
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">Estimated Hours per Week</label>
               <input
@@ -263,5 +238,5 @@ export default function CreateAssignmentModal({ onClose, onSubmit }) {
         </form>
       </div>
     </div>
-  )
+  );
 }

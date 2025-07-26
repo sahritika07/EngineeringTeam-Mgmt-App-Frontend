@@ -1,31 +1,58 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ProjectCard from "../ProjectCard"
 import EnhancedChart from "../EnhancedChart"
 
 export default function ManagerDashboard({ user }) {
-  const [projects] = useState([
-    {
-      id: 1,
-      name: "E-commerce Platform v2.0",
-      description: "Next-generation e-commerce platform with AI recommendations",
-      status: "active",
-      priority: "high",
-      progress: 75,
-      deadline: "Jun 15, 2024",
-      budget: "$500,000",
-      teamSize: 8,
-      manager: {
-        name: "Sarah Chen",
-        avatar: "/placeholder.svg?height=32&width=32",
-      },
-    },
-  ])
+  const [projects, setProjects] = useState([])
+  const [teamSize, setTeamSize] = useState(0)
+  const [activeProjects, setActiveProjects] = useState(0)
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("token")
+      const API_BASE = "http://localhost:5000"  // your backend port
+
+      console.log("🔹 User ID:", user?._id)
+
+      // Fetch engineers
+      const teamRes = await fetch(`${API_BASE}/api/users?role=engineer`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (!teamRes.ok) throw new Error("Team API failed")
+      const teamData = await teamRes.json()
+      console.log("🔹 Team Data:", teamData)
+
+      if (teamData.success && Array.isArray(teamData.data)) {
+        setTeamSize(teamData.data.length)
+      }
+
+      // Fetch projects
+      const projectRes = await fetch(`${API_BASE}/api/projects`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (!projectRes.ok) throw new Error("Project API failed")
+      const projectData = await projectRes.json()
+      console.log("🔹 Project Data:", projectData)
+
+      if (projectData.success && Array.isArray(projectData.data)) {
+        setProjects(projectData.data)
+        setActiveProjects(projectData.data.length)
+      }
+    } catch (error) {
+      console.error("❌ Error fetching data:", error)
+    }
+  }
+
+  if (user) fetchData()
+}, [user])
+
 
   const metrics = [
     {
       title: "My Team Size",
-      value: "8",
+      value: teamSize,
       change: "+2 new members",
       changeType: "positive",
       icon: "users",
@@ -34,7 +61,7 @@ export default function ManagerDashboard({ user }) {
     },
     {
       title: "Active Projects",
-      value: "3",
+      value: activeProjects,
       change: "1 completed this week",
       changeType: "positive",
       icon: "projects",
@@ -60,6 +87,64 @@ export default function ManagerDashboard({ user }) {
       iconColor: "text-purple-600",
     },
   ]
+
+
+  // const [projects] = useState([
+  //   {
+  //     id: 1,
+  //     name: "E-commerce Platform v2.0",
+  //     description: "Next-generation e-commerce platform with AI recommendations",
+  //     status: "active",
+  //     priority: "high",
+  //     progress: 75,
+  //     deadline: "Jun 15, 2024",
+  //     budget: "$500,000",
+  //     teamSize: 8,
+  //     manager: {
+  //       name: "Sarah Chen",
+  //       avatar: "/placeholder.svg?height=32&width=32",
+  //     },
+  //   },
+  // ])
+
+  // const metrics = [
+  //   {
+  //     title: "My Team Size",
+  //     value: "8",
+  //     change: "+2 new members",
+  //     changeType: "positive",
+  //     icon: "users",
+  //     iconBg: "bg-blue-100",
+  //     iconColor: "text-blue-600",
+  //   },
+  //   {
+  //     title: "Active Projects",
+  //     value: "3",
+  //     change: "1 completed this week",
+  //     changeType: "positive",
+  //     icon: "projects",
+  //     iconBg: "bg-green-100",
+  //     iconColor: "text-green-600",
+  //   },
+  //   {
+  //     title: "Team Utilization",
+  //     value: "85%",
+  //     change: "Above average",
+  //     changeType: "positive",
+  //     icon: "chart",
+  //     iconBg: "bg-yellow-100",
+  //     iconColor: "text-yellow-600",
+  //   },
+  //   {
+  //     title: "Budget Used",
+  //     value: "65%",
+  //     change: "On track",
+  //     changeType: "neutral",
+  //     icon: "dollar",
+  //     iconBg: "bg-purple-100",
+  //     iconColor: "text-purple-600",
+  //   },
+  // ]
 
   const teamMembers = [
     {
@@ -122,7 +207,7 @@ export default function ManagerDashboard({ user }) {
   ]
 
   return (
-    <div className="p-6 space-y-6">
+ <div className="p-6 space-y-6">
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {metrics.map((metric, index) => (
@@ -148,21 +233,14 @@ export default function ManagerDashboard({ user }) {
                 <p className="text-sm font-medium text-gray-600">{metric.title}</p>
                 <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
                 <p
-                  className={`text-sm flex items-center mt-1 ${
+                  className={`text-sm mt-1 ${
                     metric.changeType === "positive"
                       ? "text-green-600"
                       : metric.changeType === "warning"
-                        ? "text-yellow-600"
-                        : "text-gray-600"
+                      ? "text-yellow-600"
+                      : "text-gray-600"
                   }`}
                 >
-                  <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
                   {metric.change}
                 </p>
               </div>
@@ -186,7 +264,7 @@ export default function ManagerDashboard({ user }) {
             <h3 className="text-lg font-semibold text-gray-900">Project Progress Overview</h3>
             <button className="text-blue-600 text-sm hover:text-blue-800 font-medium">View Details</button>
           </div>
-          <EnhancedChart type="donut" />
+          <EnhancedChart type="donut" data={projects} />
         </div>
       </div>
 

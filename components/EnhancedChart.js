@@ -1,4 +1,5 @@
 export default function EnhancedChart({ type, data }) {
+  // ----------- LINE CHART -----------
   if (type === "line") {
     return (
       <div className="h-64 relative">
@@ -12,41 +13,26 @@ export default function EnhancedChart({ type, data }) {
           <rect width="100%" height="100%" fill="url(#grid)" />
 
           {/* Y-axis labels */}
-          <text x="20" y="20" className="text-xs fill-gray-500">
-            90
-          </text>
-          <text x="20" y="60" className="text-xs fill-gray-500">
-            85
-          </text>
-          <text x="20" y="100" className="text-xs fill-gray-500">
-            80
-          </text>
-          <text x="20" y="140" className="text-xs fill-gray-500">
-            75
-          </text>
+          <text x="20" y="20" className="text-xs fill-gray-500">90</text>
+          <text x="20" y="60" className="text-xs fill-gray-500">85</text>
+          <text x="20" y="100" className="text-xs fill-gray-500">80</text>
+          <text x="20" y="140" className="text-xs fill-gray-500">75</text>
 
           {/* X-axis labels */}
-          <text x="60" y="190" className="text-xs fill-gray-500">
-            Jan
-          </text>
-          <text x="120" y="190" className="text-xs fill-gray-500">
-            Feb
-          </text>
-          <text x="180" y="190" className="text-xs fill-gray-500">
-            Mar
-          </text>
-          <text x="240" y="190" className="text-xs fill-gray-500">
-            Apr
-          </text>
-          <text x="300" y="190" className="text-xs fill-gray-500">
-            May
-          </text>
-          <text x="360" y="190" className="text-xs fill-gray-500">
-            Jun
-          </text>
+          <text x="60" y="190" className="text-xs fill-gray-500">Jan</text>
+          <text x="120" y="190" className="text-xs fill-gray-500">Feb</text>
+          <text x="180" y="190" className="text-xs fill-gray-500">Mar</text>
+          <text x="240" y="190" className="text-xs fill-gray-500">Apr</text>
+          <text x="300" y="190" className="text-xs fill-gray-500">May</text>
+          <text x="360" y="190" className="text-xs fill-gray-500">Jun</text>
 
           {/* Line chart */}
-          <polyline fill="none" stroke="#3b82f6" strokeWidth="3" points="60,140 120,120 180,100 240,85 300,70 360,50" />
+          <polyline
+            fill="none"
+            stroke="#3b82f6"
+            strokeWidth="3"
+            points="60,140 120,120 180,100 240,85 300,70 360,50"
+          />
 
           {/* Data points */}
           <circle cx="60" cy="140" r="4" fill="#3b82f6" />
@@ -57,54 +43,88 @@ export default function EnhancedChart({ type, data }) {
           <circle cx="360" cy="50" r="4" fill="#3b82f6" />
         </svg>
       </div>
-    )
+    );
   }
 
+  // ----------- DYNAMIC DONUT CHART -----------
   if (type === "donut") {
+    // If there is no data
+    if (!data || data.length === 0) {
+      return (
+        <div className="h-64 flex items-center justify-center text-gray-500">
+          No project data available
+        </div>
+      );
+    }
+
+    const projectColors = ["#3b82f6", "#10b981", "#f59e0b", "#8b5cf6", "#ef4444"];
+    let cumulativePercentage = 0;
+
     return (
       <div className="flex items-center justify-center h-64">
         <div className="relative">
           <svg className="w-48 h-48 transform -rotate-90" viewBox="0 0 100 100">
-            {/* Mobile App Redesign - 65% */}
+            {/* Background base circle */}
             <circle
               cx="50"
               cy="50"
               r="35"
-              stroke="#3b82f6"
+              stroke="#e5e7eb" // light-gray background
               strokeWidth="12"
               fill="transparent"
-              strokeDasharray="142 76"
-              strokeDashoffset="0"
             />
-            {/* E-commerce Platform - 75% */}
-            <circle
-              cx="50"
-              cy="50"
-              r="35"
-              stroke="#10b981"
-              strokeWidth="12"
-              fill="transparent"
-              strokeDasharray="76 142"
-              strokeDashoffset="-142"
-            />
+
+            {data.map((project, index) => {
+              const progress = project.progress || 0;
+
+              // Skip 0% progress, do not show any color
+              if (progress <= 0) return null;
+
+              const strokeDasharray = `${progress * 2.2} ${220 - progress * 2.2}`;
+              const strokeDashoffset = -cumulativePercentage * 2.2;
+              cumulativePercentage += progress;
+
+              return (
+                <circle
+                  key={project._id || index}
+                  cx="50"
+                  cy="50"
+                  r="35"
+                  stroke={projectColors[index % projectColors.length]}
+                  strokeWidth="12"
+                  fill="transparent"
+                  strokeDasharray={strokeDasharray}
+                  strokeDashoffset={strokeDashoffset}
+                />
+              );
+            })}
           </svg>
         </div>
+
         <div className="ml-8 space-y-3">
-          <div className="flex items-center">
-            <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
-            <span className="text-sm text-gray-600 mr-4">Mobile App Redesign</span>
-            <span className="text-sm font-medium text-gray-900">65%</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
-            <span className="text-sm text-gray-600 mr-4">E-commerce Platform v2.0</span>
-            <span className="text-sm font-medium text-gray-900">75%</span>
-          </div>
+          {data.map((project, index) => (
+            <div key={project._id || index} className="flex items-center">
+              <div
+                className="w-3 h-3 rounded-full mr-3"
+                style={{
+                  backgroundColor:
+                    project.progress > 0
+                      ? projectColors[index % projectColors.length]
+                      : "#e5e7eb", // gray dot for 0%
+                }}
+              ></div>
+              <span className="text-sm text-gray-600 mr-4">{project.name}</span>
+              <span className="text-sm font-medium text-gray-900">
+                {project.progress || 0}%
+              </span>
+            </div>
+          ))}
         </div>
       </div>
-    )
+    );
   }
 
+  // ----------- TECH DONUT CHART -----------
   if (type === "tech-donut") {
     const techStack = [
       { name: "AWS", color: "#ff9500", percentage: 20 },
@@ -113,18 +133,26 @@ export default function EnhancedChart({ type, data }) {
       { name: "TypeScript", color: "#ef4444", percentage: 15 },
       { name: "Docker", color: "#8b5cf6", percentage: 10 },
       { name: "Kubernetes", color: "#3b82f6", percentage: 10 },
-    ]
+    ];
 
-    let cumulativePercentage = 0
+    let cumulativePercentage = 0;
 
     return (
       <div className="flex items-center justify-center h-64">
         <div className="relative">
           <svg className="w-48 h-48 transform -rotate-90" viewBox="0 0 100 100">
+            <circle
+              cx="50"
+              cy="50"
+              r="35"
+              stroke="#e5e7eb"
+              strokeWidth="12"
+              fill="transparent"
+            />
             {techStack.map((tech, index) => {
-              const strokeDasharray = `${tech.percentage * 2.2} ${220 - tech.percentage * 2.2}`
-              const strokeDashoffset = -cumulativePercentage * 2.2
-              cumulativePercentage += tech.percentage
+              const strokeDasharray = `${tech.percentage * 2.2} ${220 - tech.percentage * 2.2}`;
+              const strokeDashoffset = -cumulativePercentage * 2.2;
+              cumulativePercentage += tech.percentage;
 
               return (
                 <circle
@@ -138,21 +166,29 @@ export default function EnhancedChart({ type, data }) {
                   strokeDasharray={strokeDasharray}
                   strokeDashoffset={strokeDashoffset}
                 />
-              )
+              );
             })}
           </svg>
         </div>
         <div className="ml-8 space-y-2">
           {techStack.map((tech, index) => (
             <div key={index} className="flex items-center">
-              <div className="w-3 h-3 rounded-full mr-3" style={{ backgroundColor: tech.color }}></div>
+              <div
+                className="w-3 h-3 rounded-full mr-3"
+                style={{ backgroundColor: tech.color }}
+              ></div>
               <span className="text-sm text-gray-600">{tech.name}</span>
             </div>
           ))}
         </div>
       </div>
-    )
+    );
   }
 
-  return <div className="h-64 flex items-center justify-center text-gray-500">Chart placeholder</div>
+  // Fallback
+  return (
+    <div className="h-64 flex items-center justify-center text-gray-500">
+      Chart placeholder
+    </div>
+  );
 }
