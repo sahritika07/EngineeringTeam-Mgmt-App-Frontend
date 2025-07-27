@@ -60,16 +60,24 @@ console.log(overviewPer)
   const [assignments] = useState([
     {
       id: 1,
-      project: "E-commerce Platform v2.0",
-      role: "Frontend Developer",
+      project: "ChatBot",
+      role: "Full Stack",
       hours: 32,
       deadline: "Jun 15, 2024",
       status: "active",
     },
     {
       id: 2,
-      project: "Mobile App Redesign",
-      role: "UI/UX Developer",
+      project: "Finance",
+      role: "Frontend",
+      hours: 8,
+      deadline: "May 15, 2024",
+      status: "active",
+    },
+    {
+      id: 3,
+      project: "HRMS",
+      role: "Full Stack",
       hours: 8,
       deadline: "May 15, 2024",
       status: "active",

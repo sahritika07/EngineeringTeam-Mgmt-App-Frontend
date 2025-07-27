@@ -95,33 +95,6 @@ const fetchAssignments = async (token) => {
     }
   }
 
-  // const handleEditAssignment = async (id, updatedData) => {
-  //   const token = localStorage.getItem("token")
-
-  //   try {
-  //     const response = await fetch(`http://localhost:5000/api/assignments/${id}`, {
-  //       method: "PUT",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(updatedData),
-  //     })
-
-  //     const data = await response.json()
-
-  //     if (data.success) {
-  //       setAssignments(assignments.map((a) => (a._id === id ? data.data : a)))
-  //       setShowEditModal(false)
-  //       setSelectedAssignment(null)
-  //     } else {
-  //       alert(data.message || "Failed to update assignment")
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating assignment:", error)
-  //     alert("Failed to update assignment. Please try again.")
-  //   }
-  // }
 
 
 const handleEditAssignment = async (id, updatedData) => {
