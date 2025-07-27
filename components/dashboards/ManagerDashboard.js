@@ -114,62 +114,7 @@ console.log(overviewPer)
   ]
 
 
-  // const [projects] = useState([
-  //   {
-  //     id: 1,
-  //     name: "E-commerce Platform v2.0",
-  //     description: "Next-generation e-commerce platform with AI recommendations",
-  //     status: "active",
-  //     priority: "high",
-  //     progress: 75,
-  //     deadline: "Jun 15, 2024",
-  //     budget: "$500,000",
-  //     teamSize: 8,
-  //     manager: {
-  //       name: "Sarah Chen",
-  //       avatar: "/placeholder.svg?height=32&width=32",
-  //     },
-  //   },
-  // ])
 
-  // const metrics = [
-  //   {
-  //     title: "My Team Size",
-  //     value: "8",
-  //     change: "+2 new members",
-  //     changeType: "positive",
-  //     icon: "users",
-  //     iconBg: "bg-blue-100",
-  //     iconColor: "text-blue-600",
-  //   },
-  //   {
-  //     title: "Active Projects",
-  //     value: "3",
-  //     change: "1 completed this week",
-  //     changeType: "positive",
-  //     icon: "projects",
-  //     iconBg: "bg-green-100",
-  //     iconColor: "text-green-600",
-  //   },
-  //   {
-  //     title: "Team Utilization",
-  //     value: "85%",
-  //     change: "Above average",
-  //     changeType: "positive",
-  //     icon: "chart",
-  //     iconBg: "bg-yellow-100",
-  //     iconColor: "text-yellow-600",
-  //   },
-  //   {
-  //     title: "Budget Used",
-  //     value: "65%",
-  //     change: "On track",
-  //     changeType: "neutral",
-  //     icon: "dollar",
-  //     iconBg: "bg-purple-100",
-  //     iconColor: "text-purple-600",
-  //   },
-  // ]
 
   const teamMembers = [
     {
