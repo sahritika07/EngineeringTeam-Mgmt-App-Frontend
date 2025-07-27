@@ -8,162 +8,162 @@ https://github.com/user-attachments/assets/0d90956d-66ac-45f2-a8f4-7aa67bd98d3a
 
 
 
+📦 Tech Stack
+Frontend
+⚛️ Next.js (App Router / Pages Router)
 
-## 📦 Tech Stack
+💨 Tailwind CSS
 
-### Frontend
-- ⚛️ Next.js (App Router / Pages Router)
-- 💨 Tailwind CSS
-- 🪄 Shadcn/UI or Lucide for components/icons
-- 📦 Axios for API handling
-- 🍪 LocalStorage / JWT-based Auth
+🪄 Shadcn/UI or Lucide for components/icons
 
-### Backend
-- 🚀 Node.js & Express.js
-- 🗃️ MongoDB with Mongoose
-- 🔐 JWT Authentication with Role-Based Access
-- 📋 RESTful API architecture
-- 🛡️ Middleware for Authorization & Validation
-- 📈 Mongoose Virtuals, Aggregates, and Stats
+📦 Fetch API / Axios for API handling (with Base URL configuration)
 
----
+🍪 LocalStorage / JWT-based Auth
 
-## ✨ Features
+Backend
+🚀 Node.js & Express.js
 
-### Key Features
+🗃️ MongoDB with Mongoose
 
-- **🔐 Authentication & Authorization**: Secure JWT-based authentication with role-based access control
-- **👥 User Management**: Complete user lifecycle management with different roles and permissions
-- **📊 Project Management**: Create, track, and manage engineering projects with team assignments
-- **📋 Assignment Tracking**: Detailed task management with time tracking and progress monitoring
-- **📈 Analytics Dashboard**: Comprehensive analytics with charts and performance metrics
-- **🤖 AI Integration**: AI-powered project description generation and intelligent suggestions
-- **🔒 Enhanced Security**: Multiple security layers including rate limiting, data sanitization, and CORS protection
-- **📱 Responsive Design**: Mobile-first design with Tailwind CSS for optimal user experience
+🔐 JWT Authentication with Role-Based Access
 
+📋 RESTful API architecture
 
+🛡️ Middleware for Authorization & Validation
 
-### AI Integration
-- **Project Description Generation**: AI-powered automatic description generation based on project names
-- **Development Assistance**: ChatGPT and AI tools used for code optimization and feature development
-- **Future Enhancements**: Planned integration with OpenAI API for advanced features
+📈 Mongoose Virtuals, Aggregates, and Stats
 
-More AI Integration Ideas for future enhancement:
+✨ Features
+Key Features
+🔐 Authentication & Authorization: Secure JWT-based authentication with role-based access control
 
-- **Voice Commands for Admins/Managers**: “Assign this task to best available engineer”.
-- **Weekly Project Summary via AI**: Auto-generated project summary sent every Friday.
-- **Smart Notifications**: “This engineer is overloaded”, “This project is behind”.
+👥 User Management: Full user lifecycle management with roles & permissions
 
-## 📋 Prerequisites
+📊 Project Management: Create, track, and manage engineering projects with team assignments
 
-Before running this application, make sure you have the following installed:
+📋 Assignment Tracking: Task management with time tracking & progress monitoring
 
-- **Node.js** (v18 or higher)
-- **MongoDB** (v5.0 or higher)
-- **npm** or **yarn** package manager
-- **Git** for version control
+📈 Analytics Dashboard: Stats with charts and performance metrics
 
-## 🔧 Installation & Setup
+🤖 AI Integration: AI-powered project description generation and intelligent suggestions
 
-###  Clone the Repository
+🔒 Enhanced Security: Rate limiting, data sanitization, and CORS protection
 
-\`\`\`bash
-frontend - git clone https://github.com/sahritika07/EngineerMgmt-Frontend
-backend - git clone https://github.com/sahritika07/EngineerMgnt-System-Backend
-\`\`\`
+📱 Responsive Design: Mobile-first design with Tailwind CSS
 
+🤖 AI Integration
+Project Description Generation: AI-powered automatic description generation
 
+Development Assistance: ChatGPT and AI tools for optimization
 
-# Install dependencies
+Future Enhancements: Planned OpenAI integration
+
+More AI Features Planned:
+
+Voice Commands for Admins/Managers
+
+Weekly AI-generated Project Summaries
+
+Smart Notifications for overloaded engineers and delayed projects
+
+📋 Prerequisites
+Node.js (v18+)
+
+MongoDB (v5.0+)
+
+npm or yarn
+
+Git
+
+🔧 Installation & Setup
+1. Clone the Repository
+bash
+
+# Frontend
+git clone https://github.com/sahritika07/EngineerMgmt-Frontend
+
+# Backend
+git clone https://github.com/sahritika07/EngineerMgnt-System-Backend
+2. Backend Setup
+bash
+
+cd EngineerMgnt-System-Backend
 npm install
-
-# Create environment file
 cp .env.example .env
+.env Configuration:
 
-
-**Configure your `.env` file:**
-
-\`\`\`env
-# Server Configuration
+env
+Copy
+Edit
 NODE_ENV=development
 PORT=5000
 FRONTEND_URL=http://localhost:3000
 
-# Database Configuration
 MONGODB_URI=mongodb://localhost:27017/engineering-resource-management
 
-# JWT Configuration
 JWT_SECRET=your-super-secret-jwt-key-here
 JWT_EXPIRE=30d
 
-# Security Configuration
 BCRYPT_ROUNDS=12
 MAX_LOGIN_ATTEMPTS=5
 LOCKOUT_TIME=30
 
-# Rate Limiting Configuration
 RATE_LIMIT_WINDOW=15
 RATE_LIMIT_MAX_REQUESTS=100
+Start MongoDB and Seed Database:
 
+bash
 
-**Start MongoDB and seed the database:**
-
-\`\`\`bash
-# Make sure MongoDB is running
 mongod
-
-# Seed the database with sample data
 npm run seed
-
-# Start the backend server
 npm run dev
-\`\`\`
+3. Frontend Setup
+bash
 
-### 3. Frontend Setup
-
-\`\`\`bash
-# Navigate to frontend directory (from root)
-cd frontend
-
-# Install dependencies
+cd EngineerMgmt-Frontend
 npm install
-
-# Create environment file
 cp .env.example .env.local
-\`\`\`
+.env.local Configuration:
 
-**Configure your `.env.local` file:**
+env
 
-\`\`\`env
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-\`\`\`
+NEXT_PUBLIC_API_URL=https://engineeringteam-mgmt-app-backend.onrender.com/api
+Start Frontend:
 
-**Start the frontend development server:**
+bash
 
-\`\`\`bash
 npm run dev
-\`\`\`
+🔗 Access the Application
+Frontend: http://localhost:3000
 
-### 4. Access the Application
+Backend API: https://engineeringteam-mgmt-app-backend.onrender.com/api
 
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:5000/api
-- **API Documentation**: http://localhost:5000/api
+API Documentation: Available at same API base
 
 🛡️ Authentication Roles
+Admin: Full access (users, projects, assignments)
 
-Admin: Full access to users, projects, assignments
-Manager: Can manage projects they created
-Engineer: Can view assigned projects/tasks only
+Manager: Can manage only their projects & team
+
+Engineer: Can view only assigned projects/tasks
+
+🔹 Base URL Management (New Updates)
+All API calls now use API_BASE constant:
 
 
+const API_BASE = "https://engineeringteam-mgmt-app-backend.onrender.com";
+const res = await fetch(`${API_BASE}/api/engineers/overview`, { headers });
+This ensures consistent production-ready URLs and easier environment switching.
 
-### Key Benefits of Axios Integration:
+🔑 Benefits of Using API_BASE
+Centralized API URL management
 
-1. **Automatic Request/Response Transformation**: JSON parsing and stringifying
-2. **Interceptors**: Automatic token attachment and error handling
-3. **Request/Response Timeout**: Prevents hanging requests
-4. **Error Handling**: Centralized error management
-5. **Base URL Configuration**: Environment-based API endpoint management
+No need to hardcode localhost or production URLs
+
+Seamless switch between dev/staging/prod environments
+
+Reduces API call errors
+
+
 
 
