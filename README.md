@@ -135,27 +135,13 @@ Frontend: http://localhost:3000
 
 Backend API: https://engineeringteam-mgmt-app-backend.onrender.com/api
 
-API Documentation: Available at same API base
 
 🛡️ Authentication Roles
-Admin: Full access (users, projects, assignments)
 
 Manager: Can manage only their projects & team
 
 Engineer: Can view only assigned projects/tasks
 
-🔹 Base URL Management (New Updates)
-All API calls now use API_BASE constant:
-
-
-const API_BASE = "https://engineeringteam-mgmt-app-backend.onrender.com";
-const res = await fetch(`${API_BASE}/api/engineers/overview`, { headers });
-This ensures consistent production-ready URLs and easier environment switching.
-
-🔑 Benefits of Using API_BASE
-Centralized API URL management
-
-No need to hardcode localhost or production URLs
 
 Seamless switch between dev/staging/prod environments
 
