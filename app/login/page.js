@@ -111,7 +111,7 @@ export default function Login() {
               >
                 <option value="engineer">Engineer</option>
                 <option value="manager">Manager</option>
-                <option value="admin">Admin</option>
+                {/* <option value="admin">Admin</option> */}
               </select>
             </div>
 
