@@ -2,10 +2,7 @@
 A fullstack application to manage engineering teams, projects, assignments, and performance metrics. Built with **Next.js** for the frontend and **Node.js + Express + MongoDB** for the backend.
 
 
-
-https://github.com/user-attachments/assets/0d90956d-66ac-45f2-a8f4-7aa67bd98d3a
-
-
+Live Url - https://engineering-team-mgmt-app-frontend.vercel.app/
 
 
 📦 Tech Stack
@@ -80,10 +77,10 @@ Git
 bash
 
 # Frontend
-git clone https://github.com/sahritika07/EngineerMgmt-Frontend
+git clone https://github.com/sahritika07/EngineeringTeam-Mgmt-App-Frontend
 
 # Backend
-git clone https://github.com/sahritika07/EngineerMgnt-System-Backend
+git clone https://github.com/sahritika07/EngineeringTeam-Mgmt-App-Backend
 2. Backend Setup
 bash
 
