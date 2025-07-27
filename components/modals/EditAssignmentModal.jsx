@@ -37,10 +37,10 @@ export default function EditAssignmentModal({ assignment, onClose, onSubmit }) {
 
     try {
       const [projectsRes, engineersRes] = await Promise.all([
-        fetch("http://localhost:5000/api/projects", {
+        fetch("https://engineeringteam-mgmt-app-backend.onrender.com/api/projects", {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch("http://localhost:5000/api/engineers", {
+        fetch("https://engineeringteam-mgmt-app-backend.onrender.com/api/engineers", {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ])

@@ -26,7 +26,7 @@ export default function Assignments() {
 
 const fetchAssignments = async (token) => {
   try {
-    const response = await fetch("http://localhost:5000/api/assignments", {
+    const response = await fetch("https://engineeringteam-mgmt-app-backend.onrender.com/api/assignments", {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const fetchAssignments = async (token) => {
     const token = localStorage.getItem("token")
 
     try {
-      const response = await fetch("http://localhost:5000/api/assignments", {
+      const response = await fetch("https://engineeringteam-mgmt-app-backend.onrender.com/api/assignments", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -128,7 +128,7 @@ const handleEditAssignment = async (id, updatedData) => {
   const token = localStorage.getItem("token");
 
   try {
-    const response = await fetch(`http://localhost:5000/api/assignments/${id}`, {
+    const response = await fetch(`https://engineeringteam-mgmt-app-backend.onrender.com/api/assignments/${id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -163,7 +163,7 @@ const handleEditAssignment = async (id, updatedData) => {
     const values = editValues[id]
 
     try {
-      const response = await fetch(`http://localhost:5000/api/assignments/${id}`, {
+      const response = await fetch(`https://engineeringteam-mgmt-app-backend.onrender.com/api/assignments/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -193,7 +193,7 @@ const handleEditAssignment = async (id, updatedData) => {
     const token = localStorage.getItem("token")
 
     try {
-      const response = await fetch(`http://localhost:5000/api/assignments/${id}`, {
+      const response = await fetch(`hhttps://engineeringteam-mgmt-app-backend.onrender.com/api/assignments/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

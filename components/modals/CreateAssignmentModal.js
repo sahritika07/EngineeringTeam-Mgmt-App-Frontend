@@ -27,14 +27,14 @@ const fetchData = async () => {
 
   try {
     const [projectsResponse, engineersResponse] = await Promise.all([
-      fetch("http://localhost:5000/api/projects", {
+      fetch("https://engineeringteam-mgmt-app-backend.onrender.com/api/projects", {
         method: "GET",   // ✅ Added method explicitly
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       }),
-      fetch("http://localhost:5000/api/engineers", {
+      fetch("https://engineeringteam-mgmt-app-backend.onrender.com/api/engineers", {
         method: "GET",   // ✅ Added method explicitly
         headers: {
           Authorization: `Bearer ${token}`,
