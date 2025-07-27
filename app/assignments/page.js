@@ -24,39 +24,49 @@ export default function Assignments() {
     }
   }, [])
 
-  const fetchAssignments = async (token) => {
-    try {
-      const response = await fetch("http://localhost:5000/api/assignments", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      })
+const fetchAssignments = async (token) => {
+  try {
+    const response = await fetch("http://localhost:5000/api/assignments", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-      const data = await response.json()
+    const data = await response.json();
 
-      if (data.success) {
-        setAssignments(data.data)
+    if (data.success) {
+      let filteredAssignments = data.data;
 
-        // initialize edit values for engineers
-        const initial = {}
-        data.data.forEach((a) => {
-          initial[a._id] = {
-            status: a.status,
-            progress: a.progress || 0,
-            actualHours: a.actualHours || 0,
-          }
-        })
-        setEditValues(initial)
-      } else {
-        console.error("Failed to fetch assignments:", data.message)
+      // 🔹 If logged-in user is an engineer, show only their tasks
+      if (user && user.role === "engineer") {
+        filteredAssignments = data.data.filter(
+          (a) => a.assignee?._id === user._id
+        );
       }
-    } catch (error) {
-      console.error("Error fetching assignments:", error)
-    } finally {
-      setLoading(false)
+
+      setAssignments(filteredAssignments);
+
+      // Initialize edit values
+      const initial = {};
+      filteredAssignments.forEach((a) => {
+        initial[a._id] = {
+          status: a.status,
+          progress: a.progress || 0,
+          actualHours: a.actualHours || 0,
+        };
+      });
+      setEditValues(initial);
+    } else {
+      console.error("Failed to fetch assignments:", data.message);
     }
+  } catch (error) {
+    console.error("Error fetching assignments:", error);
+  } finally {
+    setLoading(false);
   }
+};
+
 
   const handleCreateAssignment = async (assignmentData) => {
     const token = localStorage.getItem("token")

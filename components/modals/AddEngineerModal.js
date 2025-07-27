@@ -35,14 +35,19 @@ export default function AddEngineerModal({ onClose, onEngineerAdded }) {
     if (updatedSkills.length > 0) setSkillsError("")
   }
 
-  const handleSubmit = async (e) => {
-  e.preventDefault()
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
   if (formData.skills.length === 0) {
-    setSkillsError("Please select at least one skill")
-    return
+    setSkillsError("Please select at least one skill");
+    return;
   }
 
-  setLoading(true)
+  setLoading(true);
+
+
+  
+
 
    const token = localStorage.getItem("token") // ✅ Correctly get token
 
@@ -139,15 +144,19 @@ export default function AddEngineerModal({ onClose, onEngineerAdded }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Avatar URL (Optional)</label>
-            <input
-              type="url"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={formData.avatarUrl}
-              onChange={(e) => setFormData({ ...formData, avatarUrl: e.target.value })}
-              placeholder="https://example.com/avatar.jpg"
-            />
-          </div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">
+    Avatar URL (Optional)
+  </label>
+  <input
+    type="url"
+    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    value={formData.avatarUrl}
+    onChange={(e) =>
+      setFormData({ ...formData, avatarUrl: e.target.value })
+    }
+    placeholder="https://example.com/avatar.jpg"
+  />
+</div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>

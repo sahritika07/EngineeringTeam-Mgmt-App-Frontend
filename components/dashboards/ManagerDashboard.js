@@ -5,6 +5,7 @@ import EnhancedChart from "../EnhancedChart"
 
 export default function ManagerDashboard({ user }) {
   const [projects, setProjects] = useState([])
+  const [overviewPer, setOverviewPer] = useState([])
   const [teamSize, setTeamSize] = useState(0)
   const [activeProjects, setActiveProjects] = useState(0)
 
@@ -24,6 +25,9 @@ useEffect(() => {
       const teamData = await teamRes.json()
       console.log("🔹 Team Data:", teamData)
 
+
+      
+
       if (teamData.success && Array.isArray(teamData.data)) {
         setTeamSize(teamData.data.length)
       }
@@ -36,17 +40,38 @@ useEffect(() => {
       const projectData = await projectRes.json()
       console.log("🔹 Project Data:", projectData)
 
+
+
       if (projectData.success && Array.isArray(projectData.data)) {
         setProjects(projectData.data)
         setActiveProjects(projectData.data.length)
       }
+
+      const overviewRes = await fetch(`${API_BASE}/api/projects/stats/overview`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (!overviewRes.ok) throw new Error("Team API failed")
+      const overview = await overviewRes.json()
+      console.log("🔹 Team Data:", overview)
+      console.log(overview.success)
+
+      if (overview.success && (overview.data)) {
+        setOverviewPer(overview.data?.utilization)
+        console.log(overview.data)
+        // setActiveProjects(overview.data.length)
+      }
+
     } catch (error) {
       console.error("❌ Error fetching data:", error)
     }
   }
 
   if (user) fetchData()
+
 }, [user])
+
+
+console.log(overviewPer)
 
 
   const metrics = [
@@ -70,7 +95,7 @@ useEffect(() => {
     },
     {
       title: "Team Utilization",
-      value: "85%",
+      value: overviewPer,
       change: "Above average",
       changeType: "positive",
       icon: "chart",
@@ -148,13 +173,13 @@ useEffect(() => {
 
   const teamMembers = [
     {
-      name: "Alex Rodriguez",
-      role: "Senior Frontend",
+      name: "Alan Walker",
+      role: " Full Stack",
       efficiency: "98%",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
     },
-    { name: "Maria Kim", role: "Lead DevOps", efficiency: "96%", avatar: "/placeholder.svg?height=40&width=40" },
-    { name: "James Wilson", role: "Principal AI/ML", efficiency: "94%", avatar: "/placeholder.svg?height=40&width=40" },
+    { name: "Krish S", role: "Mobile Apps", efficiency: "96%", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" },
+    { name: "Bob Bob", role: " Full Stack", efficiency: "94%", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" },
   ]
 
   const aiRecommendations = [
@@ -309,10 +334,11 @@ useEffect(() => {
               <div key={index} className="flex items-center justify-between">
                 <div className="flex items-center">
                   <img
-                    src={member.avatar || "/placeholder.svg"}
+                    src={member.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
                     alt={member.name}
                     className="w-10 h-10 rounded-full mr-3"
                   />
+               
                   <div>
                     <p className="text-sm font-medium text-gray-900">{member.name}</p>
                     <p className="text-xs text-gray-500">{member.role}</p>

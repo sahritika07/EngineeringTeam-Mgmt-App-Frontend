@@ -19,12 +19,17 @@ export default function EngineerCard({ engineer }) {
   return (
     <div className="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow">
       <div className="flex items-start space-x-4 mb-4">
-        <img
-          className="w-16 h-16 rounded-full"
-          // src={engineer.avatar || "/placeholder.svg"}
-          src={engineer.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
-          alt={`${engineer.firstName} ${engineer.lastName}`}
-        />
+       <img
+  className="w-16 h-16 rounded-full"
+  src={
+    engineer.avatarUrl?.trim() ||
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      `${engineer.firstName} ${engineer.lastName}`
+    )}&background=random`
+  }
+  alt={`${engineer.firstName} ${engineer.lastName}`}
+/>
+
         <div className="flex-1">
           <h3 className="text-lg font-medium text-gray-900">
             {engineer.firstName} {engineer.lastName}

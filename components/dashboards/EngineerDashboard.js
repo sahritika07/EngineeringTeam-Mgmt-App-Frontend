@@ -1,8 +1,62 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import MetricCard from "../MetricCard"
 
 export default function EngineerDashboard({ user }) {
+
+  const [projects, setProjects] = useState([])
+  const [activeProjects, setActiveProjects] = useState([])
+  const [teamSize, setTeamSize] = useState([])
+  const [overviewPer, setOverviewPer] = useState([])
+  const [activeAssignments, setActiveAssignments] = useState([])
+
+
+  useEffect(() => {
+  const fetchOverviewData = async () => {
+    try {
+      const token = localStorage.getItem("token")
+      const API_BASE = "http://localhost:5000"  // your backend port
+
+      // Fetch Engineers Overview
+      const overviewRes = await fetch(`${API_BASE}/api/engineers/overview`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+
+      if (!overviewRes.ok) throw new Error("Overview API failed")
+      const overview = await overviewRes.json()
+      console.log("🔹 Engineers Overview Data:", overview)
+
+      if (overview.success && overview.data) {
+        // Destructure the data
+        const { projects, assignments, engineers } = overview.data
+
+        // Example: Update your states (update based on your existing states)
+        setProjects(projects.totalProjects)
+        setActiveProjects(projects.activeProjects)
+        setTeamSize(engineers.totalEngineers)
+        setOverviewPer(projects.budgetUtilization) // utilization percentage
+        // You can also set more states for assignments if needed:
+        setActiveAssignments(assignments.activeAssignments)
+      }
+
+    } catch (error) {
+      console.error("❌ Error fetching Engineers Overview:", error)
+    }
+  }
+
+
+
+  if (user) fetchOverviewData()
+
+}, [user])
+
+
+console.log(projects)
+console.log(activeProjects)
+
+console.log(teamSize)
+console.log(overviewPer)
+
   const [assignments] = useState([
     {
       id: 1,
@@ -25,7 +79,7 @@ export default function EngineerDashboard({ user }) {
   const metrics = [
     {
       title: "Active Assignments",
-      value: "2",
+      value: activeAssignments,
       change: "1 new this week",
       changeType: "positive",
       icon: "assignments",
